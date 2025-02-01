@@ -64,21 +64,24 @@
   <script>
     document.getElementById('appointmentForm').addEventListener('submit', function(e) {
       e.preventDefault();
-
-      const formData = {
-        name: e.target.name.value,
-        email: e.target.email.value,
-        phone: e.target.phone.value,
-        date: e.target.date.value,
-        message: e.target.message.value
-      };
-
-      fetch('https://script.google.com/macros/s/AKfycbxauL3uE_FLwl43mvjfPNGAgTjLuTlhVSrHnRsaAWjHdxudSORXhquSH8Mtefk5sPHBJw/exec', {  // Замініть цей рядок на свій URL
+    
+      // Форматуємо дані як x-www-form-urlencoded
+      const formData = new URLSearchParams();
+      formData.append('name', e.target.name.value);
+      formData.append('email', e.target.email.value);
+      formData.append('phone', e.target.phone.value);
+      formData.append('date', e.target.date.value);
+      formData.append('message', e.target.message.value);
+    
+      fetch('https://script.google.com/macros/s/AKfycbxauL3uE_FLwl43mvjfPNGAgTjLuTlhVSrHnRsaAWjHdxudSORXhquSH8Mtefk5sPHBJw/exec', {
         method: 'POST',
-        body: JSON.stringify(formData)
+        mode: 'no-cors',  // Це важливо для уникнення CORS-помилок
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: formData
       })
-      .then(response => response.text())
-      .then(data => {
+      .then(() => {
         alert('Ваша заявка успішно відправлена!');
         e.target.reset();
       })
