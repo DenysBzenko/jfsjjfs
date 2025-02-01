@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Запис на прийом</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      width: 300px;
+    }
+    
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Запис на прийом</h2>
+    <form id="appointmentForm">
+      <input type="text" name="name" placeholder="Ваше ім'я" required>
+      <input type="email" name="email" placeholder="Ваш Email" required>
+      <input type="tel" name="phone" placeholder="Ваш телефон" required>
+      <input type="date" name="date" required>
+      <textarea name="message" placeholder="Повідомлення"></textarea>
+      <button type="submit">Записатись</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = {
+        name: e.target.name.value,
+        email: e.target.email.value,
+        phone: e.target.phone.value,
+        date: e.target.date.value,
+        message: e.target.message.value
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbxauL3uE_FLwl43mvjfPNGAgTjLuTlhVSrHnRsaAWjHdxudSORXhquSH8Mtefk5sPHBJw/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+        })
+        .then(response => {
+        alert('Ваша заявка успішно відправлена!');
+        e.target.reset();
+        })
+        .catch(error => {
+        alert('Сталася помилка: ' + error);
+        });
+  </script>
+</body>
+</html>
