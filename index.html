@@ -64,24 +64,21 @@
   <script>
     document.getElementById('appointmentForm').addEventListener('submit', function(e) {
       e.preventDefault();
-    
-      // Створюємо дані у вигляді рядка
-      const formData = 
-        'name=' + encodeURIComponent(e.target.name.value) + 
-        '&email=' + encodeURIComponent(e.target.email.value) + 
-        '&phone=' + encodeURIComponent(e.target.phone.value) + 
-        '&date=' + encodeURIComponent(e.target.date.value) + 
-        '&message=' + encodeURIComponent(e.target.message.value);
-    
-      fetch('https://script.google.com/macros/s/AKfycbxauL3uE_FLwl43mvjfPNGAgTjLuTlhVSrHnRsaAWjHdxudSORXhquSH8Mtefk5sPHBJw/exec', {
+
+      const formData = {
+        name: e.target.name.value,
+        email: e.target.email.value,
+        phone: e.target.phone.value,
+        date: e.target.date.value,
+        message: e.target.message.value
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbxauL3uE_FLwl43mvjfPNGAgTjLuTlhVSrHnRsaAWjHdxudSORXhquSH8Mtefk5sPHBJw/exec', {  // Замініть цей рядок на свій URL
         method: 'POST',
-        mode: 'no-cors', // Використовуємо no-cors для уникнення помилок CORS
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: formData
+        body: JSON.stringify(formData)
       })
-      .then(() => {
+      .then(response => response.text())
+      .then(data => {
         alert('Ваша заявка успішно відправлена!');
         e.target.reset();
       })
